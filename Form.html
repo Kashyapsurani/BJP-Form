@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referral Count</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f0e7ff, #c2d6ff);
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            width: 90%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #ff7300; /* Changed to orange */
+            padding: 15px;
+            border-radius: 15px 15px 0 0;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        h3 {
+            margin: 0;
+            font-weight: 900;
+            font-size: 1.5em;
+        }
+
+        .logo, .image {
+            width: 30%;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        .count {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .name, .membership, .state {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-align: left;
+            margin: 15px 0;
+        }
+
+        p, label {
+            margin: 0;
+            font-weight: bolder;
+        }
+
+        input {
+            border: 2px solid #ff7300; /* Changed to orange */
+            border-radius: 5px;
+            padding: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #ff9f9f;
+        }
+
+        #upload {
+            aspect-ratio: 1/1;
+            max-width: 100px;
+            border-radius: 10px;
+        }
+
+        .icons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .icon {
+            cursor: pointer;
+            margin: 0 15px;
+            font-size: 28px; /* Adjust icon size */
+            color: #ff7300; /* Changed to orange */
+            transition: transform 0.3s;
+        }
+
+        .icon:hover {
+            transform: scale(1.2);
+        }
+
+        /* Advertisement Form Styles */
+        .advertisement-form {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .advertisement-form input, 
+        .advertisement-form textarea {
+            width: calc(100% - 20px);
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .advertisement-form button {
+            background-color: #ff7300; /* Changed to orange */
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .advertisement-form button:hover {
+            background-color: #ff4c3b; /* Optionally keep this as red for hover effect */
+        }
+    </style>
+</head>
+<body>
+
+<div>
+
+    <div class="count">
+        <div class="card" id="card">
+            <div class="header">
+                <div class="logo">
+                    <img src="./images-removebg-preview (18).png" alt="BJP Logo" width="100%">
+                </div>
+                <div class="texts">
+                    <h3>BHARATIYA <br> JANATA PARTY</h3>
+                </div>
+                <div class="image" onclick="document.getElementById('fileInput').click();">
+                    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" id="upload" alt="Upload Preview" width="100%">
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                </div>
+            </div>
+            <form>
+                <div class="name">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" placeholder="Enter Name" required>
+                </div>
+                <div class="state">
+                    <p>State:</p>
+                    <p>Bagasara State Bhajap</p>
+                </div>
+                <div class="membership">
+                    <label for="membership">Membership Number:</label>
+                    <input type="text" id="membership" placeholder="Enter Number" required>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="icons">
+        <span class="icon material-symbols-outlined" onclick="downloadCard()">download</span>
+        <span class="icon material-symbols-outlined" onclick="shareCard()">share</span>
+    </div>
+</div>
+
+<script>
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('upload').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function downloadCard() {
+        const card = document.getElementById('card');
+        html2canvas(card).then(canvas => {
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = 'referral_card.png';
+            link.click();
+        });
+    }
+
+    function shareCard() {
+        const card = document.getElementById('card');
+        html2canvas(card).then(canvas => {
+            const dataUrl = canvas.toDataURL('image/png');
+            const shareData = {
+                title: 'Referral Card',
+                text: 'Check out my referral card!',
+                url: dataUrl
+            };
+            navigator.share(shareData).catch(console.error);
+        });
+    }
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</body>
+</html>
